@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 from random import sample
 
-def read_file(path):
-    df = pd.read_csv(path, header=0, index_col=0, sep=';', dayfirst=True, parse_dates=['timestamp'])
+def read_schedule(path):
+    df = pd.read_csv(path, header=0, index_col=0, sep=';', encoding='cp1251', dayfirst=True, parse_dates=['timestamp'])
     return df
 
 
@@ -26,8 +26,8 @@ def insert_person(ins_stuff, schedule, timestamp):
     room = ins_stuff['room']
     place = schedule.loc[(schedule['timestamp'] == timestamp) & (schedule['room'] == room)
                          & (schedule['staff'] == 'Free'), 'place'].min()
-    schedule.loc[(schedule['timestamp'] == timestamp) & (schedule['room'] == room)
-                 & (schedule['place'] == place), 'staff'] = ins_stuff['staff']
+    schedule['staff'].loc[(schedule['timestamp'] == timestamp) & (schedule['room'] == room)
+                 & (schedule['place'] == place)] = ins_stuff['staff']
     return 0
 
 
